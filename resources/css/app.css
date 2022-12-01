@@ -1,0 +1,28 @@
+body {
+	display: flex;
+flex-direction: column;
+height:100vh;
+margin: 0;
+padding: 0;
+}
+A {
+	color: #000000;
+	text-decoration: none;
+	
+}
+.topmenu{
+	background-color: #6666ff;
+}
+.topmenu A{
+	color: #efffef;
+	text-decoration: none;
+}
+.footer{
+	padding: 10px;
+	font-size: 8pt;
+	color: #eeeeee;
+	background-color: #393939;
+}
+.height100per{
+	min-height: 100%;
+}

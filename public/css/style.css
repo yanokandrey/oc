@@ -1,0 +1,107 @@
+body {
+	display: flex;
+	flex-direction: column;
+	height:100vh;
+	margin: 0;
+	padding: 0;
+}
+A {
+	color: #000000;
+	text-decoration: none;
+}
+input { 
+	margin-bottom: 4px;
+	margin-top: 10ps;
+	}
+.topmenu{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-bottom: 6px;
+	background-color: #6666ff;
+}
+.topmenu A{
+	color: #efffef;
+	text-decoration: none;
+}
+.footer{
+	padding: 10px;
+	font-size: 8pt;
+	color: #eeeeee;
+	background-color: #393939;
+}
+.height100per{
+	min-height: 100%;
+}
+.w100{
+	width: 100%;
+}
+.green {
+	background-color: #aaffaa;
+}
+.DashboardMenuItemName {
+	padding-top: 0px;
+	text-transform: uppercase;
+	font-size: 10pt;
+	font-weight: noemal;
+	text-align: left;
+	overflow: hidden;
+}
+
+.DashboardMenuSubItemName {
+	padding-top: 0px;
+	text-transform: uppercase;
+	font-size: 7pt;
+	font-weight: noemal;
+	text-align: left;
+	overflow: hidden;
+}
+
+.DashboardMenuItem{
+	text-align: center;
+	font-size: 8pt;
+	border: 1px solid #333333;
+	border-radius: 10px;
+	width: 14px;
+	height: 14px;
+	margin-top: 3px;
+	overflow: hidden;
+}
+.DashboardMenuSubItem{
+	text-align: center;
+	font-size: 8pt;
+	border: 1px solid #333333;
+	border-radius: 10px;
+	width: 10px;
+	height: 10px;
+	margin-top: 3px;
+	overflow: hidden;
+}
+.activeMenu{
+	background-color: #aaaaaa;
+}
+.Block{
+	margin-bottom: 20px;
+}
+.blockfile{
+	margin-bottom: 10px;
+	border: 1px #bbbbbb dashed;
+}
+.Title{
+	font-size: 16pt;
+}
+.blue {
+	background-color: blue;
+}
+.BlockTitle{
+	border-bottom: 0px solid #333333;
+	font-size: 10pt;
+	margin-top: 4px;
+	margin-bottom: 10px;
+	text-align: left;
+	color: #333333;
+	background-color: #ffff88;
+	text-transform: uppercase;
+}
+.border {
+	border: 1px solid black;
+}
