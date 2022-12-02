@@ -16,9 +16,9 @@ class AuthController extends Controller
 	
     public function GenerateLoginUrl() {
 		
-		$client_id = '10395078417-48melovulhhi11vqrfe7hlou27403qu4.apps.googleusercontent.com'; // Client ID
-		$client_secret = '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'; // Client secret
-		$redirect_uri = 'http://localhost:8000/auth/google/callback'; // Redirect URIs
+		$client_id = config('google.CLIENT-ID'); // Client ID
+		$client_secret = config('google.CLIENT-SECRET'); // Client secret
+		$redirect_uri = config('google.REDIRECT-URL'); // Redirect URIs
 
 		$url = 'https://accounts.google.com/o/oauth2/auth';
 
@@ -50,9 +50,9 @@ class AuthController extends Controller
 		}
 		else {
 		$token=sha1(uniqid(time(), true));
-		$client_id = '10395078417-48melovulhhi11vqrfe7hlou27403qu4.apps.googleusercontent.com'; // Client ID
-		$client_secret = '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'; // Client secret
-		$redirect_uri = 'http://localhost:8000/auth/google/callback'; // Redirect URIs
+		$client_id = config('google.CLIENT-ID'); // Client ID
+		$client_secret = config('google.CLIENT-SECRET'); // Client secret
+		$redirect_uri = config('google.REDIRECT-URL'); // Redirect URIs
 		
 		$url = 'https://accounts.google.com/o/oauth2/auth';
 

@@ -1,0 +1,6 @@
+<?php
+return [
+  'CLIENT-ID' => env('GOOGLE_CLIENT_ID'),
+  'CLIENT-SECRET' => env('GOOGLE_CLIENT_SECRET'),
+  'REDIRECT-URL' => env('GOOGLE_REDIRECT_URL')
+];
