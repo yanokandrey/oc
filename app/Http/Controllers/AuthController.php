@@ -13,19 +13,14 @@ use App\Controller\DashboardController;
 
 class AuthController extends Controller
 {
-	
     public function GenerateLoginUrl() {
 		
-		$client_id = config('google.CLIENT-ID'); // Client ID
-		$client_secret = config('google.CLIENT-SECRET'); // Client secret
-		$redirect_uri = config('google.REDIRECT-URL'); // Redirect URIs
-
 		$url = 'https://accounts.google.com/o/oauth2/auth';
 
 		$params = array(
-			'redirect_uri'  => $redirect_uri,
+			'redirect_uri'  => config('google.REDIRECT-URL'),
 			'response_type' => 'code',
-			'client_id'     => $client_id,
+			'client_id'     => config('google.CLIENT-ID'),
 			'scope'         => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
 			);
 
@@ -34,34 +29,22 @@ class AuthController extends Controller
 		return $GoogleLink;
 	}
 	
-	public function LoginUrl() {
+	public function LoginURL() {
 		return view('welcome')->with('google_url', $this->GenerateLoginUrl());
 	}
 	
 	public function Login(Request $code){
 
-		if(Auth::attempt()) {
-			if(Auth::user()->type=="1") {
-				return redirect()->route('dashboard.basicsWelcome');
-			}
-			if(Auth::user()->type=="0"){
-				return view('order/order');
-			}
-		}
-		else {
 		$token=sha1(uniqid(time(), true));
-		$client_id = config('google.CLIENT-ID'); // Client ID
-		$client_secret = config('google.CLIENT-SECRET'); // Client secret
-		$redirect_uri = config('google.REDIRECT-URL'); // Redirect URIs
 		
 		$url = 'https://accounts.google.com/o/oauth2/auth';
 
 		if (isset($code)) {
 			$result = false;
 			$params = array(
-				'client_id'     => $client_id,
-				'client_secret' => $client_secret,
-				'redirect_uri'  => $redirect_uri,
+				'client_id'     => config('google.CLIENT-ID'),
+				'client_secret' => config('google.CLIENT-SECRET'),
+				'redirect_uri'  => config('google.REDIRECT-URL'),
 				'grant_type'    => 'authorization_code',
 				'code'          => $_GET['code']);
 
@@ -83,26 +66,22 @@ class AuthController extends Controller
 				
 				if (isset($GoogleUserInfo['id'])) {
 					$result = true;
-				$user=DB::table('users')->where('google_id', $GoogleUserInfo['id'])->first();
-					if ($user) {
-						switch($user->type) {
-							case"1":
-								Auth::loginUsingId($user->id);
-								return redirect(route('dashboard.basicsWelcome'));
-							break;
-							case"0":
-								Auth::loginUsingId($user->id);
-								return view('order.order');
-							break;
-						}	
+					$user=DB::table('users')->where('google_id', $GoogleUserInfo['id'])->first();
+					if ($user && $user->role=="1") {
+						Auth::loginUsingId($user->id);
+						return redirect(route('dashboard.basicsWelcome'));
 					}
-					else {
+					elseif($user && $user->role=="0") {
+						Auth::loginUsingId($user->id);
+						return view('order.order');
+					}	
+					elseif(!$user) {
 						if (is_null(DB::table('users')->find(1))) {
 							$this->CreateAdmin($GoogleUserInfo['name'],$GoogleUserInfo['email'],$GoogleUserInfo['id'],$token);
 							$user=DB::table('users')->where('google_id', $GoogleUserInfo['id'])->first();
 							Auth::loginUsingId($user->id);
 							return redirect(route('dashboard.basicsWelcome'));
-						}
+							}
 						else { 
 							$this->CreateUser($GoogleUserInfo['name'],$GoogleUserInfo['email'],$GoogleUserInfo['id'],$token);
 							$user=DB::table('users')->where('google_id', $GoogleUserInfo['id'])->first();
@@ -112,7 +91,8 @@ class AuthController extends Controller
 					}
 				}
 			}
-		}}
+		}
+		return redirect(route('welcome'));
 	}
 	public function CreateAdmin($name,$email,$GoogleId,$token) {
 
@@ -120,10 +100,9 @@ class AuthController extends Controller
 			"name"=>$name,
 			"email"=>$email,
 			"google_id"=>$GoogleId,
-			"type"=>"1",
+			"role"=>"1",
 			"token"=>$token,
 		]);
-			
 	}
 
 	public function CreateUser($name,$email,$GoogleId,$token) {
@@ -131,14 +110,9 @@ class AuthController extends Controller
 			"name"=>$name,
 			"email"=>$email,
 			"google_id"=>$GoogleId,
-			"type"=>"0",
+			"role"=>"0",
 			"token"=>$token,
 		]);		
-	}
-	
-	public function GetUserType($google_id) {
-		$user=DB::table('users')->select('type')->where('google_id', $google_id)->first();
-		return $user->type;
 	}
 	
 	public function GetUser($google_id) {
@@ -148,6 +122,6 @@ class AuthController extends Controller
 	public function Logout(){
 		Session::flush();
 		Auth::logout();
-		return view('welcome')->with('google_url',$this->GenerateLoginUrl());	
+		return redirect(route('welcome'))->with('google_url',$this->GenerateLoginUrl());	
 	}
 }

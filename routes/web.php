@@ -7,13 +7,13 @@ use App\Http\Controllers\OrderController;
 //use App\Http\Middleware\Auth;
 
 
-Route::get('/',[AuthController::class, 'LoginUrl'])->name('welcome');
+Route::get('/',[AuthController::class, 'LoginURL'])->name('welcome');
 
 Route::get('/logout',[AuthController::class, 'Logout']);
 
 Route::get('/auth/google/callback',[AuthController::class, 'Login']);
 
-Route::group(['prefix' =>'dashboard', 'middleware' => 'auth'], function(){
+Route::group(['prefix' =>'dashboard', 'middleware' => 'auth', 'middleware' => 'dashboard'], function(){
 	Route::get('/basicsWelcome',[DashboardController::class, 'basicsWelcome'])->name('dashboard.basicsWelcome');
 	Route::post('/basicsWelcomePost',[DashboardController::class, 'basicsWelcomePost'])->name('dashboard.basicsWelcomePost');
 
