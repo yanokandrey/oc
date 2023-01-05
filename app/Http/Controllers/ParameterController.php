@@ -2,66 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Session;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
-use App\Models\dashboard;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
 use Image;
-use App\Http\Controllers\ParameterController;
 
-class DashboardController extends Controller
+class ParameterController extends Controller
 {
-   public function basicWelcome(){
-		$favicon=DB::table('dashboards')->where(['name' => 'Favicon'])->first();
-		if(!$favicon){
-			$favicon = new dashboard;
-			$favicon->value="";
-		}
-		$logo=DB::table('dashboards')->where(['name' => 'Logo'])->first();
-		if(!$logo){
-			$logo = new dashboard;
-			$logo->value="";
-		}
-		$image=DB::table('dashboards')->where(['name' => 'WelcomeImage'])->first();
-		if(!$image){
-			$image = new dashboard;
-			$image->value="";
-		}
-		$text=DB::table('dashboards')->where(['name' => 'WelcomeText'])->first();
-		$text->value=str_replace("<br />","",$text->value);
-	//	$text=htmlspecialchars($text);
-		if(!$text){
-			$text = new dashboard;
-			$text->value="";
-		}
-		$footer=DB::table('dashboards')->where(['name' => 'WelcomeFooter'])->first();
-		if(!$footer){
-			$footer = new dashboard;
-			$footer->value="";
-		}
-		return view('dashboard.basicWelcome',['favicon'=>$favicon->value,'logo'=>$logo->value,'image'=>$image->value,'text'=>$text->value,'footer'=>$footer->value]);
-	}
-    public function basicWelcomePost(Request $request){
-
-			//ParametresController::saveFile($request,'favicon','realpublic');
-			//dd('2'.$request);
+    public function saveSettingsWelcome(Request $request){
+		
+			$this->favicon($request);
 			$this->logo($request);
 			$this->welcomeImage($request);
 			$this->welcomeText($request);
 			$this->welcomeFooter($request);
 			
-			return redirect(route('dashboard.basicWelcome'));
-		
+			return redirect(route('dashboard.basicWelcome'));	 
 	}
+
 	public function favicon(Request $request){
-		if($request->validate([
-            'favicon' => 'required|file|mimes: icon,ico,gif,png|max:2048|dimensions:min_width=16,min_height=16,max_width=512,max_height=512,ratio=1/1'
-        ])){ 
+			if($request->validate([
+			'favicon' => 'file|mimes: gif,png,icon,ico|max:8100|dimensions:min_width=16,min_height=16,max_width=16,max_height=16,ratio=1/1'
+        ])){
 			$fileFavicon = $request->file('favicon');
 
 			$destinationPath = '../public';
@@ -78,7 +42,6 @@ class DashboardController extends Controller
 			
 			$fileFavicon->move($destinationPath,$fileFavicon->getClientOriginalName());
 	
-			//$newPath='./resources/view/favicon.blade.php';
 			$fileFaviconName=$fileFavicon->getClientOriginalName();
 			$FaviconBladePhpContent='<link rel="icon" type="image/x-icon" href="'.$fileFaviconName.'">';
 			$DashboardFaviconBladePhpContent='<link rel="icon" type="image/x-icon" href="../'.$fileFaviconName.'">';
@@ -89,19 +52,18 @@ class DashboardController extends Controller
 
 			DB::table('dashboards')
 			->updateOrInsert(
-				['name' => 'Favicon', 'status' => '1', 'partition' => 'welcome'],
+				['name' => 'Favicon', 'partition' => 'welcome'],
 				['value' => $fileFaviconName]
 			);
 		}
 	}
 	public function logo(Request $request){
 		if($request->validate([
-            'logo' => 'nulable|file|mimes: jpeg,jpg,gif,png|max:2048|dimensions:min_width=32,min_height=32,max_width=256,max_height=64'
-        ])){ 
+			'logo' => 'file|mimes: jpg,gif,png|max:8100|dimensions:min_width=32,min_height=32,max_width=256,max_height=64'
+        ])){
 			$logo=DB::table('dashboards')->where(['name' => 'Logo'])->first();
 			
 			$fileLogo = $request->file('logo');
-
 			$destinationPath = '../storage/app/public';
 			
 			if(!$logo){
@@ -110,11 +72,10 @@ class DashboardController extends Controller
 			}
 			if($logo->value and $logo->value!=$fileLogo->getClientOriginalName()){
 				$oldLogoPath=$logo->value;
-				Storage::drive('local')->delete($oldLogoPath);
+				Storage::drive('public')->delete($oldLogoPath);
 			}
 			$fileLogo->move($destinationPath,$fileLogo->getClientOriginalName());
 	
-			$newPath='./resources/view/logo.blade.php';
 			$fileLogoName=$fileLogo->getClientOriginalName();
 			$LogoBladePhpContent='<img class="logo" src="/storage/'.$fileLogoName.'">';
 			$DashboardLogoBladePhpContent='<img class="logo" src="../storage/'.$fileLogoName.'">';
@@ -132,9 +93,8 @@ class DashboardController extends Controller
 	}
 	public function welcomeImage(Request $request){
 		if($request->validate([
-            'welcomeImage' => 'required|file|mimes: jpeg,jpg,gif,png|max:20480|dimensions:min_width=32,min_height=32,max_width=1920,max_height=1080'
-        ])){ 
-		dd("123");
+            'welcomeImage' => 'image|mimes:jpeg,png,jpg,gif,svg|max:204800',
+       ])){
 			$image=DB::table('dashboards')->where(['name' => 'WelcomeImage'])->first();
 			
 			$fileImage = $request->file('welcomeImage');
@@ -148,7 +108,7 @@ class DashboardController extends Controller
 			if($image->value and $image->value!=$fileImage->getClientOriginalName()){
 				$oldImagePath=$image->value;
 				Storage::drive('public')->delete($oldImagePath);
-				Storage::drive('public')->delete('thumbnails/'.$oldImagePath);
+				Storage::drive('public')->delete("thumbnails/".$oldImagePath);
 			}
 			$fileImageName=time().".".$fileImage->getClientOriginalExtension();
 			$thumbnailPath = 'thumbnails/';
@@ -181,7 +141,7 @@ class DashboardController extends Controller
 
 			DB::table('dashboards')
 			->updateOrInsert(
-				['name' => 'WelcomeImage', 'status' => '1', 'partition' => 'welcome'],
+				['name' => 'WelcomeImage', 'partition' => 'welcome'],
 				['value' => $fileImageName]
 			);
 		}
@@ -191,7 +151,6 @@ class DashboardController extends Controller
             'welcomeText' => 'required'
         ])){
 			$welcomeText=nl2br($request->welcomeText);
-			//dd($welcomeText);
 			if(!$welcomeText){
 				$welcomeText = new dashboard;
 				$welcomeText->value="";
@@ -200,10 +159,10 @@ class DashboardController extends Controller
 			
 			DB::table('dashboards')
 			->updateOrInsert(
-				['name' => 'WelcomeText', 'status' => '1', 'partition' => 'welcome'],
+				['name' => 'WelcomeText', 'partition' => 'welcome'],
 				['value' => $welcomeText]
 			);
-	} 
+        } 
    }
     public function welcomeFooter(Request $request) {
 	   	if($request->validate([
@@ -218,28 +177,84 @@ class DashboardController extends Controller
 			
 			DB::table('dashboards')
 			->updateOrInsert(
-				['name' => 'WelcomeFooter', 'status' => '1', 'partition' => 'welcome'],
+				['name' => 'WelcomeFooter', 'partition' => 'welcome'],
 				['value' => $welcomeFooter]
 			);
 		} 
    }
-    public function basicSEO(){
-		return view('dashboard.basicSEO');
-	}
-    public function steps(){
-		return view('dashboard.steps');
-	}
-	public function package(){
-		return view('dashboard.package');
-	}
-	public function delivery(){
-		return view('dashboard.delivery');
-	}
-    public function payments(){
-		return view('dashboard.payments');
-	}
-	public function GetUserInfo($token){
-		$user=DB::table('users')->where('token', $token)->first();
-		return $user;
+
+    public function saveFile(Request $file,$name,$disk){
+		if($file->validate([
+            $name => 'required|file|mimes: icon,ico,gif,png|max:2048|dimensions:min_width=16,min_height=16,max_width=512,max_height=512,ratio=1/1'
+        ])){
+		
+			$file = $file->file($name);
+			
+			Switch($name) {
+				case"favicon":
+					$FileBladePhpContent='<link rel="icon" type="image/x-icon" href="'.$file->getClientOriginalName().'">';
+					$DashboardFileBladePhpContent='<link rel="icon" type="image/x-icon" href="../'.$file->getClientOriginalName().'">';
+					$destinationPath = '../public';
+				break;
+				case"logo":
+					$destinationPath = '../storage/app/public';
+					$FileBladePhpContent='<img class="logo" src="/storage/'.$file->getClientOriginalName().'">';
+					$DashboardFileBladePhpContent='<img class="logo" src="../storage/'.$file->getClientOriginalName().'">';
+				break;
+				case"welcomeImage":
+					$destinationPath = '../storage/app/public';
+					$FileBladePhpContent='<img class="logo" src="/storage/'.$file->getClientOriginalName().'">';
+					$DashboardFileBladePhpContent='<img class="logo" src="../storage/'.$file->getClientOriginalName().'">';
+				break;
+			}
+			
+			$fileDb=DB::table('dashboards')->where(['name' => $name])->first();
+			
+			if(!$fileDb){
+				$fileDb = new dashboard;
+				$fileDb->value="";
+			}
+			elseif($fileDb->value and $fileDb->value!=$file->getClientOriginalName()){
+				$oldFilePath=$fileDb->value;
+				Storage::drive($disk)->delete($oldFilePath);
+			}
+			
+			$file->move($destinationPath,$file->getClientOriginalName());
+	
+			$newPath='./resources/view/'.$name.'.blade.php';
+			$fileName=$file->getClientOriginalName();
+			
+			Storage::disk('views')->put($name.'.blade.php',$FileBladePhpContent);
+			Storage::disk('views')->put('dashboard/'.$name.'.blade.php',$DashboardFileBladePhpContent);
+			Storage::disk('views')->put('order/'.$name.'.blade.php',$DashboardFileBladePhpContent);
+
+			DB::table('dashboards')
+			->updateOrInsert(
+				['name' => $name, 'status' => '1', 'partition' => 'welcome'],
+				['value' => $fileName]
+			);
+		}
+	}	
+	public function Varificate($file,$name) {
+		
+		switch($name){
+				case"icon":
+					$file->validate([
+					'favicon' => 'required|file|mimes: icon,ico,gif,png|max:2048|dimensions:min_width=16,min_height=16,max_width=512,max_height=512,ratio=1/1'
+					]);
+				break;
+				case"logo":
+					$file->validate([
+					'logo' 
+					=> 'required|file|mimes: jpg, jpeg, gif, png|max:2048|dimensions:min_width=32,min_height=32,max_width=256,max_height=768'
+					]);
+					return $request;
+				break;
+				case"welcomeImage":
+					$file->validate([
+						'welcomeImage' => 'required|file|mimes: icon,ico,gif,png|max:2048|dimensions:min_width=1320,min_height=32'
+					]);
+				break;
+		}
 	}
 }

@@ -1,22 +1,22 @@
 <div class="ccnteiner">
-	<a href="{{ route('dashboard.basicsWelcome') }}">
+	<a href="{{ route('dashboard.basicWelcome') }}">
 		<div class="row">
-			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuItem @if(request()->is('dashboard/basicsWelcome') or request()->is('dashboard/basicsSEO')) activeMenu @endif'>&nbsp;</div></div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuItem @if(request()->is('dashboard/basicWelcome') or request()->is('dashboard/basicSEO')) activeMenu @endif'>&nbsp;</div></div>
 			<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 DashboardMenuItemName">Basic</div>
 		</div>
 	</a>
-			@if(request()->is('dashboard/basicsWelcome') or request()->is('dashboard/basicsSEO'))
-		<a href="{{ route('dashboard.basicsWelcome') }}">
+			@if(request()->is('dashboard/basicWelcome') or request()->is('dashboard/basicSEO'))
+		<a href="{{ route('dashboard.basicWelcome') }}">
 		<div class="row">
 			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuSubItem @if(request()->is('dashboard/basicsWelcome')) activeMenu @endif'>&nbsp;</div></div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuSubItem @if(request()->is('dashboard/basicWelcome')) activeMenu @endif'>&nbsp;</div></div>
 			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 DashboardMenuSubItemName">Welcome</div>
 		</div>
 		</a>
-		<a href="{{ route('dashboard.basicsSEO') }}">
+		<a href="{{ route('dashboard.basicSEO') }}">
 		<div class="row">
 			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuSubItem @if(request()->is('dashboard/basicsSEO')) activeMenu @endif'>&nbsp;</div></div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuSubItem @if(request()->is('dashboard/basicSEO')) activeMenu @endif'>&nbsp;</div></div>
 			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 DashboardMenuSubItemName">SEO</div>
 		</div>
 		</a>

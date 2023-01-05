@@ -35,8 +35,26 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
-
+		  'views' => [
+            'driver' => 'local',
+            'root' => storage_path('../resources/views'),
+            'throw' => true,
+        ],
+		  'realpublic' => [
+            'driver' => 'local',
+            'root' => storage_path('../public'),
+            'throw' => true,
+        ],
+/*
         'public' => [
+            'driver' => 'local',
+            'root' => storage_path('../..'),
+            'url' => env('APP_URL').'/publib',
+            'visibility' => 'public',
+            'throw' => false,
+        ],*/
+		/*Original*/
+		'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',

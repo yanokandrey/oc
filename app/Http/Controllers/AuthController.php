@@ -69,7 +69,7 @@ class AuthController extends Controller
 					$user=DB::table('users')->where('google_id', $GoogleUserInfo['id'])->first();
 					if ($user && $user->role=="1") {
 						Auth::loginUsingId($user->id);
-						return redirect(route('dashboard.basicsWelcome'));
+						return redirect(route('dashboard.basicWelcome'));
 					}
 					elseif($user && $user->role=="0") {
 						Auth::loginUsingId($user->id);
@@ -80,7 +80,7 @@ class AuthController extends Controller
 							$this->CreateAdmin($GoogleUserInfo['name'],$GoogleUserInfo['email'],$GoogleUserInfo['id'],$token);
 							$user=DB::table('users')->where('google_id', $GoogleUserInfo['id'])->first();
 							Auth::loginUsingId($user->id);
-							return redirect(route('dashboard.basicsWelcome'));
+							return redirect(route('dashboard.basicWelcome'));
 							}
 						else { 
 							$this->CreateUser($GoogleUserInfo['name'],$GoogleUserInfo['email'],$GoogleUserInfo['id'],$token);
