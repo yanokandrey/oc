@@ -14,26 +14,27 @@ OrderConstructor - daahboard/mainpage
 @endsection
 @section('main')
 <div class='conteiner'>
-	<form name='submit2' action='../dashboard.basicsSEO' method='POST' enctype='multipart-form/data'>
+	<form action='saveSeoParameter' method='POST' enctype='multipart/form-data'>
 	@csrf
 	<div class='row w100'>	
 		<div class='col-12 BlockTitle'>
 			SEO
 		</div>
-		<div class='col-12'>
-			<input type='text' name='title' placeholder='Title'  class='form-control'>
+		<div class='col-12 mb-2'>
+			<input type='text' name='seoTitle' placeholder='Title' class='form-control' value='{{$title}}'>
+		</div>
+
+		<div class='col-12 mb-2'>
+			<textarea name='seoDescription' placeholder='Description'  class='form-control'>{{$description}}</textarea>
+		</div>
+		<div class='col-12 mb-2'>
+			<textarea name='seoKeywords' placeholder='Keywoards' class='form-control'>{{$keywords}}</textarea>
+		</div>
+		<div class='col-12 mb-2'>
+			<textarea name='seoRobots' placeholder='Robots'  class='form-control' rows='6'>{{$robots}}</textarea>
 		</div>
 		<div class='col-12'>
-			<textarea placeholder='Description'  class='form-control'></textarea>
-		</div>
-		<div class='col-12'>
-			<textarea placeholder='Keywoards'  class='form-control'></textarea>
-		</div>
-		<div class='col-12'>
-			<textarea placeholder='Robots'  class='form-control' rows='6'></textarea>
-		</div>
-		<div class='col-12'>
-			<button type="submit" name="submit2" class="btn btn-outline-success btn-block mt-4">Submit</button>
+			<button type="submit" name="submit2" class="btn btn-success btn-block mt-4">Submit</button>
 		</div>
 	</div>	
 	</form>

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
 use Image;
+use App\Models\Parameters;
 
 class ParameterController extends Controller
 {
@@ -21,6 +22,15 @@ class ParameterController extends Controller
 			
 			return redirect(route('dashboard.basicWelcome'));	 
 	}
+	public function saveSettingsSeo(Request $request){
+		
+			$this->seoTitle($request);
+			$this->seoDescription($request);
+			$this->seoKeywords($request);
+			$this->seoRobots($request);
+			
+			return redirect(route('dashboard.basicSEO'));	 
+	}
 
 	public function favicon(Request $request){
 			if($request->validate([
@@ -30,9 +40,9 @@ class ParameterController extends Controller
 
 			$destinationPath = '../public';
 			
-			$favicon=DB::table('dashboards')->where(['name' => 'Favicon'])->first();
+			$favicon=DB::table('parameters')->where(['name' => 'Favicon'])->first();
 			if(!$favicon){
-				$favicon = new dashboard;
+				$favicon = new parameters;
 				$favicon->value="";
 			}
 			if($favicon->value and $favicon->value!=$fileFavicon->getClientOriginalName()){
@@ -50,7 +60,7 @@ class ParameterController extends Controller
 			Storage::disk('views')->put('dashboard/favicon.blade.php',$DashboardFaviconBladePhpContent);
 			Storage::disk('views')->put('order/favicon.blade.php',$DashboardFaviconBladePhpContent);
 
-			DB::table('dashboards')
+			DB::table('parameters')
 			->updateOrInsert(
 				['name' => 'Favicon', 'partition' => 'welcome'],
 				['value' => $fileFaviconName]
@@ -61,13 +71,13 @@ class ParameterController extends Controller
 		if($request->validate([
 			'logo' => 'file|mimes: jpg,gif,png|max:8100|dimensions:min_width=32,min_height=32,max_width=256,max_height=64'
         ])){
-			$logo=DB::table('dashboards')->where(['name' => 'Logo'])->first();
+			$logo=DB::table('parameters')->where(['name' => 'Logo'])->first();
 			
 			$fileLogo = $request->file('logo');
 			$destinationPath = '../storage/app/public';
 			
 			if(!$logo){
-				$logo = new dashboard;
+				$logo = new parameters;
 				$logo->value="";
 			}
 			if($logo->value and $logo->value!=$fileLogo->getClientOriginalName()){
@@ -84,9 +94,9 @@ class ParameterController extends Controller
 			Storage::disk('views')->put('dashboard/logo.blade.php',$DashboardLogoBladePhpContent);
 			Storage::disk('views')->put('order/logo.blade.php',$DashboardLogoBladePhpContent);
 
-			DB::table('dashboards')
+			DB::table('parameters')
 			->updateOrInsert(
-				['name' => 'Logo', 'status' => '1', 'partition' => 'welcome'],
+				['name' => 'Logo', 'partition' => 'welcome'],
 				['value' => $fileLogoName]
 			);
 		}
@@ -95,14 +105,14 @@ class ParameterController extends Controller
 		if($request->validate([
             'welcomeImage' => 'image|mimes:jpeg,png,jpg,gif,svg|max:204800',
        ])){
-			$image=DB::table('dashboards')->where(['name' => 'WelcomeImage'])->first();
+			$image=DB::table('parameters')->where(['name' => 'WelcomeImage'])->first();
 			
 			$fileImage = $request->file('welcomeImage');
 
 			$destinationPath = '../storage/app/public';
 			
 			if(!$image){
-				$image = new dashboard;
+				$image = new parameters;
 				$image->value="";
 			}
 			if($image->value and $image->value!=$fileImage->getClientOriginalName()){
@@ -139,7 +149,7 @@ class ParameterController extends Controller
 			Storage::disk('views')->put('dashboard/logo. blade.php',$DashboardImageBladePhpContent);
 			Storage::disk('views')->put('order/image.blade.php',$DashboardImageBladePhpContent);
 
-			DB::table('dashboards')
+			DB::table('parameters')
 			->updateOrInsert(
 				['name' => 'WelcomeImage', 'partition' => 'welcome'],
 				['value' => $fileImageName]
@@ -152,15 +162,15 @@ class ParameterController extends Controller
         ])){
 			$welcomeText=nl2br($request->welcomeText);
 			if(!$welcomeText){
-				$welcomeText = new dashboard;
+				$welcomeText = new parameters;
 				$welcomeText->value="";
 			}
 			Storage::disk('views')->put('welcomeText.blade.php',$welcomeText);
 			
-			DB::table('dashboards')
+			DB::table('parameters')
 			->updateOrInsert(
 				['name' => 'WelcomeText', 'partition' => 'welcome'],
-				['value' => $welcomeText]
+				['value' => '1']
 			);
         } 
    }
@@ -170,18 +180,92 @@ class ParameterController extends Controller
         ])){
 			$welcomeFooter=$request->welcomeFooter;
 			if(!$welcomeFooter){
-				$welcomeFooter = new dashboard;
+				$welcomeFooter = new parameters;
 				$welcomeFooter->value="";
 			}
 			Storage::disk('views')->put('welcomeFooter.blade.php',$welcomeFooter);
 			
-			DB::table('dashboards')
+			DB::table('parameters')
 			->updateOrInsert(
 				['name' => 'WelcomeFooter', 'partition' => 'welcome'],
-				['value' => $welcomeFooter]
+				['value' => '1']
 			);
 		} 
    }
+
+    public function seoTitle(Request $request) {
+	   	if($request->validate([
+            'seoTitle' => 'required'
+        ])){
+			$seoTitle=$request->seoTitle;
+			if(!$seoTitle){
+				$seoTitle = new parameters;
+				$seoTitle->value="";
+			}
+			Storage::disk('views')->put('title.blade.php',$seoTitle);
+			
+			DB::table('parameters')
+			->updateOrInsert(
+				['name' => 'seoTitle', 'partition' => 'seo'],
+				['value' => '1']
+			);
+		} 
+   }
+   public function seoDescription (Request $request) {
+	   	if($request->validate([
+            'seoDescription' => 'required'
+        ])){
+			$seoDescription=$request->seoDescription;
+			if(!$seoDescription){
+				$seoDescription = new parameters;
+				$seoDescription->value="";
+			}
+			Storage::disk('views')->put('description.blade.php',$seoDescription);
+			
+			DB::table('parameters')
+			->updateOrInsert(
+				['name' => 'seoDescription', 'partition' => 'seo'],
+				['value' => '1']
+			);
+		} 
+   }
+   public function seoKeywords (Request $request) {
+	   	if($request->validate([
+            'seoKeywords' => 'required'
+        ])){
+			$seoKeywords=$request->seoKeywords;
+			if(!$seoKeywords){
+				$seoKeywords = new parameters;
+				$seoKeywords->value="";
+			}
+			Storage::disk('views')->put('keywords.blade.php',$seoKeywords);
+			
+			DB::table('parameters')
+			->updateOrInsert(
+				['name' => 'seoKeywords', 'partition' => 'seo'],
+				['value' => '1']
+			);
+		} 
+   }
+   public function seoRobots (Request $request) {
+	   	if($request->validate([
+            'seoRobots' => 'required'
+        ])){
+			$seoRobots=$request->seoRobots;
+			if(!$seoRobots){
+				$seoRobots = new parameters;
+				$seoRobots->value="";
+			}
+			Storage::disk('realpublic')->put('robots.txt',$seoRobots);
+			
+			DB::table('parameters')
+			->updateOrInsert(
+				['name' => 'seoRobots', 'partition' => 'seo'],
+				['value' => '1']
+			);
+		} 
+   }
+
 
     public function saveFile(Request $file,$name,$disk){
 		if($file->validate([
@@ -208,7 +292,7 @@ class ParameterController extends Controller
 				break;
 			}
 			
-			$fileDb=DB::table('dashboards')->where(['name' => $name])->first();
+			$fileDb=DB::table('parameters')->where(['name' => $name])->first();
 			
 			if(!$fileDb){
 				$fileDb = new dashboard;
@@ -228,9 +312,9 @@ class ParameterController extends Controller
 			Storage::disk('views')->put('dashboard/'.$name.'.blade.php',$DashboardFileBladePhpContent);
 			Storage::disk('views')->put('order/'.$name.'.blade.php',$DashboardFileBladePhpContent);
 
-			DB::table('dashboards')
+			DB::table('parameters')
 			->updateOrInsert(
-				['name' => $name, 'status' => '1', 'partition' => 'welcome'],
+				['name' => $name, 'partition' => 'welcome'],
 				['value' => $fileName]
 			);
 		}
@@ -245,8 +329,7 @@ class ParameterController extends Controller
 				break;
 				case"logo":
 					$file->validate([
-					'logo' 
-					=> 'required|file|mimes: jpg, jpeg, gif, png|max:2048|dimensions:min_width=32,min_height=32,max_width=256,max_height=768'
+					'logo' => 'required|file|mimes: jpg, jpeg, gif, png|max:2048|dimensions:min_width=32,min_height=32,max_width=256,max_height=768'
 					]);
 					return $request;
 				break;

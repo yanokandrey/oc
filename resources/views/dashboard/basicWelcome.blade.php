@@ -47,8 +47,8 @@ OrderConstructor - daahboard/mainpage
 				<input accept='image/png, image/jpeg' type='file' name='welcomeImage' class='form-control'>
 			</div>
 		</div>
-		<div class='col-12'>
-			<textarea name='welcomeText' placeholder='Welcome page text' class='form-control'>{{$text}}</textarea>
+		<div class='col-12 mb-2'>
+			<textarea name='welcomeText' rows='6' placeholder='Welcome page text' class='form-control'>{{$text}}</textarea>
 		</div>
 		<div class='col-12'>
 			<input type='text' name='welcomeFooter' placeholder='footer' class='form-control' value='{{$footer}}'>

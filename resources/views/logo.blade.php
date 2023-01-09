@@ -1,1 +1,1 @@
-<img class="logo" src="/storage/logo.jpg">
+<img class="logo" src="/storage/logotip.jpg">

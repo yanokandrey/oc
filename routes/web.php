@@ -19,6 +19,7 @@ Route::group(['prefix' =>'dashboard', 'middleware' => 'auth'], function(){
 	Route::post('/saveWelcomeParameter',[ParameterController::class, 'saveSettingsWelcome', 'middleware' => 'dashboard'])->name('saveWelcomeParameters');
 
 	Route::get('/basicSEO',[DashboardController::class, 'basicSEO', 'middleware' => 'dashboard'])->name('dashboard.basicSEO');
+	Route::post('/saveSeoParameter',[ParameterController::class, 'saveSettingsSeo', 'middleware' => 'dashboard'])->name('saveSeoParameters');
 
 	Route::get('/steps',[DashboardController::class, 'steps', 'middleware' => 'dashboard'])->name('dashboard.steps');
 	Route::get('/package',[DashboardController::class, 'package', 'middleware' => 'dashboard'])->name('dashboard.package');

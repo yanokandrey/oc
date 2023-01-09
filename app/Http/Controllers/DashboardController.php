@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\dashboard;
+use App\Models\Parameters;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
@@ -17,31 +18,39 @@ use App\Http\Controllers\ParameterController;
 class DashboardController extends Controller
 {
    public function basicWelcome(){
-		$favicon=DB::table('dashboards')->where(['name' => 'Favicon'])->first();
+		$favicon=DB::table('parameters')->where(['name' => 'Favicon'])->first();
 		if(!$favicon){
-			$favicon = new dashboard;
+			$favicon = new parameters;
 			$favicon->value="";
 		}
-		$logo=DB::table('dashboards')->where(['name' => 'Logo'])->first();
+		$logo=DB::table('parameters')->where(['name' => 'Logo'])->first();
 		if(!$logo){
-			$logo = new dashboard;
+			$logo = new parameters;
 			$logo->value="";
 		}
-		$image=DB::table('dashboards')->where(['name' => 'WelcomeImage'])->first();
+		$image=DB::table('parameters')->where(['name' => 'WelcomeImage'])->first();
 		if(!$image){
-			$image = new dashboard;
+			$image = new parameters;
 			$image->value="";
 		}
-		$text=DB::table('dashboards')->where(['name' => 'WelcomeText'])->first();
-		$text->value=str_replace("<br />","",$text->value);
+		$text=DB::table('parameters')->where(['name' => 'WelcomeText'])->first();
+		if($text->value) {
+			$text->value=Storage::disk('views')->get('welcomeText.blade.php');
+		}
 	//	$text=htmlspecialchars($text);
 		if(!$text){
-			$text = new dashboard;
+			$text = new parameters;
 			$text->value="";
 		}
-		$footer=DB::table('dashboards')->where(['name' => 'WelcomeFooter'])->first();
+		else {
+			$text->value=str_replace("<br />","",$text->value);
+		}
+		$footer=DB::table('parameters')->where(['name' => 'WelcomeFooter'])->first();
+		if($footer->value){
+			$footer->value=Storage::disk('views')->get('welcomeFooter.blade.php');
+		}
 		if(!$footer){
-			$footer = new dashboard;
+			$footer = new parameters;
 			$footer->value="";
 		}
 		return view('dashboard.basicWelcome',['favicon'=>$favicon->value,'logo'=>$logo->value,'image'=>$image->value,'text'=>$text->value,'footer'=>$footer->value]);
@@ -58,173 +67,53 @@ class DashboardController extends Controller
 			return redirect(route('dashboard.basicWelcome'));
 		
 	}
-	public function favicon(Request $request){
-		if($request->validate([
-            'favicon' => 'required|file|mimes: icon,ico,gif,png|max:2048|dimensions:min_width=16,min_height=16,max_width=512,max_height=512,ratio=1/1'
-        ])){ 
-			$fileFavicon = $request->file('favicon');
-
-			$destinationPath = '../public';
-			
-			$favicon=DB::table('dashboards')->where(['name' => 'Favicon'])->first();
-			if(!$favicon){
-				$favicon = new dashboard;
-				$favicon->value="";
-			}
-			if($favicon->value and $favicon->value!=$fileFavicon->getClientOriginalName()){
-				$oldFaviconPath=$favicon->value;
-				Storage::drive('realpublic')->delete($oldFaviconPath);
-			}
-			
-			$fileFavicon->move($destinationPath,$fileFavicon->getClientOriginalName());
-	
-			//$newPath='./resources/view/favicon.blade.php';
-			$fileFaviconName=$fileFavicon->getClientOriginalName();
-			$FaviconBladePhpContent='<link rel="icon" type="image/x-icon" href="'.$fileFaviconName.'">';
-			$DashboardFaviconBladePhpContent='<link rel="icon" type="image/x-icon" href="../'.$fileFaviconName.'">';
-	
-			Storage::disk('views')->put('favicon.blade.php',$FaviconBladePhpContent);
-			Storage::disk('views')->put('dashboard/favicon.blade.php',$DashboardFaviconBladePhpContent);
-			Storage::disk('views')->put('order/favicon.blade.php',$DashboardFaviconBladePhpContent);
-
-			DB::table('dashboards')
-			->updateOrInsert(
-				['name' => 'Favicon', 'status' => '1', 'partition' => 'welcome'],
-				['value' => $fileFaviconName]
-			);
-		}
-	}
-	public function logo(Request $request){
-		if($request->validate([
-            'logo' => 'nulable|file|mimes: jpeg,jpg,gif,png|max:2048|dimensions:min_width=32,min_height=32,max_width=256,max_height=64'
-        ])){ 
-			$logo=DB::table('dashboards')->where(['name' => 'Logo'])->first();
-			
-			$fileLogo = $request->file('logo');
-
-			$destinationPath = '../storage/app/public';
-			
-			if(!$logo){
-				$logo = new dashboard;
-				$logo->value="";
-			}
-			if($logo->value and $logo->value!=$fileLogo->getClientOriginalName()){
-				$oldLogoPath=$logo->value;
-				Storage::drive('local')->delete($oldLogoPath);
-			}
-			$fileLogo->move($destinationPath,$fileLogo->getClientOriginalName());
-	
-			$newPath='./resources/view/logo.blade.php';
-			$fileLogoName=$fileLogo->getClientOriginalName();
-			$LogoBladePhpContent='<img class="logo" src="/storage/'.$fileLogoName.'">';
-			$DashboardLogoBladePhpContent='<img class="logo" src="../storage/'.$fileLogoName.'">';
-	
-			Storage::disk('views')->put('logo.blade.php',$LogoBladePhpContent);
-			Storage::disk('views')->put('dashboard/logo.blade.php',$DashboardLogoBladePhpContent);
-			Storage::disk('views')->put('order/logo.blade.php',$DashboardLogoBladePhpContent);
-
-			DB::table('dashboards')
-			->updateOrInsert(
-				['name' => 'Logo', 'status' => '1', 'partition' => 'welcome'],
-				['value' => $fileLogoName]
-			);
-		}
-	}
-	public function welcomeImage(Request $request){
-		if($request->validate([
-            'welcomeImage' => 'required|file|mimes: jpeg,jpg,gif,png|max:20480|dimensions:min_width=32,min_height=32,max_width=1920,max_height=1080'
-        ])){ 
-		dd("123");
-			$image=DB::table('dashboards')->where(['name' => 'WelcomeImage'])->first();
-			
-			$fileImage = $request->file('welcomeImage');
-
-			$destinationPath = '../storage/app/public';
-			
-			if(!$image){
-				$image = new dashboard;
-				$image->value="";
-			}
-			if($image->value and $image->value!=$fileImage->getClientOriginalName()){
-				$oldImagePath=$image->value;
-				Storage::drive('public')->delete($oldImagePath);
-				Storage::drive('public')->delete('thumbnails/'.$oldImagePath);
-			}
-			$fileImageName=time().".".$fileImage->getClientOriginalExtension();
-			$thumbnailPath = 'thumbnails/';
-			
-			if(Image::make($fileImage)->width()>='1320'){
-				
-				$img=Image::make($fileImage)->resize('1320', null,
-					function ($constraint) {
-					$constraint->aspectRatio();
-					})->save('storage/'.$fileImageName);
-			}
-			
-			if(!Storage::disk('public')->exists('/thumbnails')) {
-				Storage::disk('public')->makeDirectory('/thumbnails', 0775, true); //creates directory
-			}
-			$img=Image::make($fileImage)->resize('80', null,
-				function ($constraint) {
-				$constraint->aspectRatio();
-				})->save('storage/thumbnails/'.$fileImageName);
-				
-			$fileImage->move($destinationPath,$fileImageName);
-			
-			$newPath='./resources/view/image.blade.php';
-			$ImageBladePhpContent='<img class="image" src="/storage/'.$fileImageName.'">';
-			$DashboardImageBladePhpContent='<img class="image" src="../storage/'.$fileImageName.'">';
-	
-			Storage::disk('views')->put('image.blade.php',$ImageBladePhpContent);
-			Storage::disk('views')->put('dashboard/logo. blade.php',$DashboardImageBladePhpContent);
-			Storage::disk('views')->put('order/image.blade.php',$DashboardImageBladePhpContent);
-
-			DB::table('dashboards')
-			->updateOrInsert(
-				['name' => 'WelcomeImage', 'status' => '1', 'partition' => 'welcome'],
-				['value' => $fileImageName]
-			);
-		}
-	}
-    public function welcomeText(Request $request) {
-	   	if($request->validate([
-            'welcomeText' => 'required'
-        ])){
-			$welcomeText=nl2br($request->welcomeText);
-			//dd($welcomeText);
-			if(!$welcomeText){
-				$welcomeText = new dashboard;
-				$welcomeText->value="";
-			}
-			Storage::disk('views')->put('welcomeText.blade.php',$welcomeText);
-			
-			DB::table('dashboards')
-			->updateOrInsert(
-				['name' => 'WelcomeText', 'status' => '1', 'partition' => 'welcome'],
-				['value' => $welcomeText]
-			);
-	} 
-   }
-    public function welcomeFooter(Request $request) {
-	   	if($request->validate([
-            'welcomeFooter' => 'required'
-        ])){
-			$welcomeFooter=$request->welcomeFooter;
-			if(!$welcomeFooter){
-				$welcomeFooter = new dashboard;
-				$welcomeFooter->value="";
-			}
-			Storage::disk('views')->put('welcomeFooter.blade.php',$welcomeFooter);
-			
-			DB::table('dashboards')
-			->updateOrInsert(
-				['name' => 'WelcomeFooter', 'status' => '1', 'partition' => 'welcome'],
-				['value' => $welcomeFooter]
-			);
-		} 
-   }
     public function basicSEO(){
-		return view('dashboard.basicSEO');
+
+		$title=DB::table('parameters')->where(['name' => 'SeoTitle'])->first();
+		if($title){
+			$title=Storage::disk('views')->get('title.blade.php');
+		}
+		else{
+			$title=Storage::disk('views')->get('title.blade.php');
+		}
+		if(!$title){
+			$title="";
+		}
+
+		$description=DB::table('parameters')->where(['name' => 'SeoDescription'])->first();
+		if($description){
+			$description=Storage::disk('views')->get('description.blade.php');
+		}
+		else{
+			$desctiption=Storage::disk('views')->get('description.blade.php');
+		}
+		if(!$description){
+			$description="";
+		}
+		
+		$keywords=DB::table('parameters')->where(['name' => 'SeoKeywords'])->first();
+		if($keywords){
+			$keywords=Storage::disk('views')->get('keywords.blade.php');
+		}
+		else{
+			$keywords=Storage::disk('views')->get('keywords.blade.php');
+		}
+		if(!$keywords){
+			$keywords="";
+		}
+
+		$robots=DB::table('parameters')->where(['name' => 'SeoRobots'])->first();
+		if($robots){
+			$robots=Storage::disk('realpublic')->get('robots.txt');
+		}
+		else{
+			$robots=Storage::disk('realpublic')->get('robots.txt');
+		}
+		if(!$robots){
+			$robots="";
+		}
+		
+		return view('dashboard.basicSEO',['title'=>$title,'description'=>$description,'keywords'=>$keywords,'robots'=>$robots]);
 	}
     public function steps(){
 		return view('dashboard.steps');

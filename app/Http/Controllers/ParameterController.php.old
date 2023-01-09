@@ -86,16 +86,11 @@ class ParameterController extends Controller
 		}
 	}
 	public function logo(Request $request){
-	//dd($request);
+	
 		if($request->validate([
 			'logo' => 'file|mimes: jpg,gif,png|max:8100|dimensions:min_width=32,min_height=32,max_width=256,max_height=64'
         ])){
-	//		dd("1");	 
-			//}
-			
-			
-//		else { 
-//dd("2");		
+	
 			$logo=DB::table('dashboards')->where(['name' => 'Logo'])->first();
 			
 			$fileLogo = $request->file('logo');
@@ -110,10 +105,9 @@ class ParameterController extends Controller
 				$oldLogoPath=$logo->value;
 				Storage::drive('public')->delete($oldLogoPath);
 			}
-			//dd($logo->value);
+			
 			$fileLogo->move($destinationPath,$fileLogo->getClientOriginalName());
 	
-			//$newPath='./resources/view/logo.blade.php';
 			$fileLogoName=$fileLogo->getClientOriginalName();
 			$LogoBladePhpContent='<img class="logo" src="/storage/'.$fileLogoName.'">';
 			$DashboardLogoBladePhpContent='<img class="logo" src="../storage/'.$fileLogoName.'">';
@@ -127,7 +121,7 @@ class ParameterController extends Controller
 				['name' => 'Logo', 'status' => '1', 'partition' => 'welcome'],
 				['value' => $fileLogoName]
 			);
-			//dd($request);
+			
 			return $request;
 		}
 	}
@@ -207,7 +201,7 @@ class ParameterController extends Controller
 			DB::table('dashboards')
 			->updateOrInsert(
 				['name' => 'WelcomeText', 'status' => '1', 'partition' => 'welcome'],
-				['value' => $welcomeText]
+				['value' => '1']
 			);
 	} 
    }
@@ -225,7 +219,26 @@ class ParameterController extends Controller
 			DB::table('dashboards')
 			->updateOrInsert(
 				['name' => 'WelcomeFooter', 'status' => '1', 'partition' => 'welcome'],
-				['value' => $welcomeFooter]
+				['value' => 1]
+			);
+		} 
+   }
+   
+    public function seoTitle(Request $request) {
+	   	if($request->validate([
+            'seoTitle' => 'required'
+        ])){
+			$seotitle=$request->seoTitle;
+			if(!$seoTitle){
+				$seoTitle = new dashboard;
+				$seoTitle->value="";
+			}
+			Storage::disk('views')->put('title.blade.php',$welcomeFooter);
+			
+			DB::table('parameters')
+			->updateOrInsert(
+				['name' => 'seoTitle', 'partition' => 'seo'],
+				['value' => 1]
 			);
 		} 
    }

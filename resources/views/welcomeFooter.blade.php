@@ -1,1 +1,1 @@
-&copy;&nbsp;PARTYCLUB
+&copy;&nbsp;PARTUCLUB
