@@ -1,1 +1,1 @@
-<img class="image" src="../storage/1673229624.png">
+<img class="image" src="../storage/1673384488.png">

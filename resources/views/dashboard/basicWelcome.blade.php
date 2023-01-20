@@ -16,11 +16,13 @@ OrderConstructor - daahboard/mainpage
 <div class='conteiner'>
 	<form action="saveWelcomeParameter" method="POST" enctype="multipart/form-data">
 	@csrf
-	<div class='row w100 Block'>
-		<div class='BlockTitle'>
+	<div class='row Block'>
+		<div class='col-12 BlockTitle'>
 			Wellcome page
 		</div>
-		<div class='col-12 blockfile'>
+	</div>
+	<div class='row'>
+		<div class='col-5 blockfile'>
 			<div class='col-lg-12'><img class='favicon' src='../{{$favicon}}'>&nbsp;{{$favicon}}</div>
 			<div class='col-lg-12'>
 				Icon-logo <small>(for bookmark)</small>
@@ -29,7 +31,9 @@ OrderConstructor - daahboard/mainpage
 				<input accept='.ico,.icon,.png' type='file' name='favicon' placeholder='favicon' class='form-control'>
 			</div>
 		</div>
-		<div class='col-12 blockfile'>
+	</div>
+	<div class='row'>
+		<div class='col-5 blockfile'>
 			<div class='col-lg-12'><img class='logo' src='../storage/{{$logo}}'>&nbsp;{{$logo}}</div>
 			<div class='col-12'>
 				Logo <small>(for topmenu)</small>
@@ -38,7 +42,9 @@ OrderConstructor - daahboard/mainpage
 				<input accept='image/png, image/jpeg' type='file' name='logo' class='form-control'>
 			</div>
 		</div>
-		<div class='col-12 blockfile'>
+	</div>
+	<div class='row'>
+		<div class='col-5 blockfile'>
 			<div class='col-lg-12'><img class='imageThumbnail' src='../storage/thumbnails/{{$image}}'>&nbsp;{{$image}}</div>
 			<div class='col-12'>
 				Wellcome image <small>(for wellcome screen)</small>
@@ -47,13 +53,19 @@ OrderConstructor - daahboard/mainpage
 				<input accept='image/png, image/jpeg' type='file' name='welcomeImage' class='form-control'>
 			</div>
 		</div>
-		<div class='col-12 mb-2'>
+	</div>
+	<div class='row'>
+		<div class='col-5 mb-2'>
 			<textarea name='welcomeText' rows='6' placeholder='Welcome page text' class='form-control'>{{$text}}</textarea>
 		</div>
-		<div class='col-12'>
+	</div>
+	<div class='row'>
+		<div class='col-5'>
 			<input type='text' name='welcomeFooter' placeholder='footer' class='form-control' value='{{$footer}}'>
 		</div>
-		<div class='col-12'>
+	</div>
+	<div class='row'>
+		<div class='col-5 text-end'>
 			<button type="submit" name="submit" class="btn btn-success btn-block mt-4">Submit</button>
 		</div>
 	</div>

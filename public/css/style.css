@@ -147,6 +147,10 @@ input {
 	margin-bottom: 10px;
 	border: 1px #bbbbbb dashed;
 }
+.dotted-frame{
+	margin-bottom: 10px;
+	border: 1px #bbbbbb dashed;
+}
 .Title{
 	font-size: 16pt;
 }

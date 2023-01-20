@@ -211,7 +211,7 @@ class ParameterController extends Controller
 			);
 		} 
    }
-   public function seoDescription (Request $request) {
+    public function seoDescription (Request $request) {
 	   	if($request->validate([
             'seoDescription' => 'required'
         ])){
@@ -229,7 +229,7 @@ class ParameterController extends Controller
 			);
 		} 
    }
-   public function seoKeywords (Request $request) {
+    public function seoKeywords (Request $request) {
 	   	if($request->validate([
             'seoKeywords' => 'required'
         ])){
@@ -247,7 +247,7 @@ class ParameterController extends Controller
 			);
 		} 
    }
-   public function seoRobots (Request $request) {
+    public function seoRobots (Request $request) {
 	   	if($request->validate([
             'seoRobots' => 'required'
         ])){
@@ -266,7 +266,7 @@ class ParameterController extends Controller
 		} 
    }
 
-
+/*
     public function saveFile(Request $file,$name,$disk){
 		if($file->validate([
             $name => 'required|file|mimes: icon,ico,gif,png|max:2048|dimensions:min_width=16,min_height=16,max_width=512,max_height=512,ratio=1/1'
@@ -339,5 +339,5 @@ class ParameterController extends Controller
 					]);
 				break;
 		}
-	}
+	}*/
 }

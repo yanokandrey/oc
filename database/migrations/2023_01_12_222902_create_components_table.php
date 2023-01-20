@@ -13,11 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('parameters', function (Blueprint $table) {
+        Schema::create('components', function (Blueprint $table) {
             $table->id();
-			$table->string('name');
-			$table->string('value');
-			$table->string('partition');
+			$table->String('name');
+			$table->integer('step');
+			$table->String('image');
+			$table->text('description');
+			$table->double('price');
+			$table->double('weight');
+			$table->integer('deleted');
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parameters');
+        Schema::dropIfExists('components');
     }
 };

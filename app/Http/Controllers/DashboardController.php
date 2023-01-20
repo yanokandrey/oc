@@ -34,24 +34,21 @@ class DashboardController extends Controller
 			$image->value="";
 		}
 		$text=DB::table('parameters')->where(['name' => 'WelcomeText'])->first();
-		if($text->value) {
-			$text->value=Storage::disk('views')->get('welcomeText.blade.php');
-		}
-	//	$text=htmlspecialchars($text);
 		if(!$text){
 			$text = new parameters;
 			$text->value="";
 		}
 		else {
+			$text->value=Storage::disk('views')->get('welcomeText.blade.php');
 			$text->value=str_replace("<br />","",$text->value);
 		}
 		$footer=DB::table('parameters')->where(['name' => 'WelcomeFooter'])->first();
-		if($footer->value){
-			$footer->value=Storage::disk('views')->get('welcomeFooter.blade.php');
-		}
 		if(!$footer){
 			$footer = new parameters;
 			$footer->value="";
+		}
+		else{
+			$footer->value=Storage::disk('views')->get('welcomeFooter.blade.php');
 		}
 		return view('dashboard.basicWelcome',['favicon'=>$favicon->value,'logo'=>$logo->value,'image'=>$image->value,'text'=>$text->value,'footer'=>$footer->value]);
 	}
@@ -85,7 +82,7 @@ class DashboardController extends Controller
 			$description=Storage::disk('views')->get('description.blade.php');
 		}
 		else{
-			$desctiption=Storage::disk('views')->get('description.blade.php');
+			$description=Storage::disk('views')->get('description.blade.php');
 		}
 		if(!$description){
 			$description="";
@@ -116,8 +113,26 @@ class DashboardController extends Controller
 		return view('dashboard.basicSEO',['title'=>$title,'description'=>$description,'keywords'=>$keywords,'robots'=>$robots]);
 	}
     public function steps(){
-		return view('dashboard.steps');
+		$steps = DB::table('steps')->get();
+ 
+		return view('dashboard.steps',['steps' => $steps]);
 	}
+
+    public function stepEdit(Request $request){
+		$steps = DB::table('steps')->get();
+		$activeStep =  DB::table('steps')->where(['id' => $request->id])->first();
+ 
+		return view('dashboard.stepEdit',['steps' => $steps, 'activeStep' => $activeStep]);
+	}
+
+    public function step(Request $request){
+		//dd($request->id);
+		$steps = DB::table('steps')->get();
+		$components = DB::table('components')->where(['step' => $request->id, 'deleted' => 0])->get();
+		$activeStep =  DB::table('steps')->where(['id' => $request->id])->first();
+		return view('dashboard.step',['steps' => $steps, 'components' => $components, 'activeStep' => $activeStep]);
+	}
+
 	public function package(){
 		return view('dashboard.package');
 	}

@@ -5,7 +5,7 @@
 			<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 DashboardMenuItemName">Basic</div>
 		</div>
 	</a>
-			@if(request()->is('dashboard/basicWelcome') or request()->is('dashboard/basicSEO'))
+		@if(request()->is('dashboard/basicWelcome') or request()->is('dashboard/basicSEO'))
 		<a href="{{ route('dashboard.basicWelcome') }}">
 		<div class="row">
 			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
@@ -23,10 +23,20 @@
 			@endif
  	<a href="{{ route('dashboard.steps') }}">
 		<div class="row">
-			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuItem @if(request()->is('dashboard/steps')) activeMenu @endif'>&nbsp;</div></div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuItem @if(request()->is('dashboard/steps') or request()->is('dashboard/step/*') or request()->is('dashboard/component/*')) activeMenu @endif'>&nbsp;</div></div>
 			<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 DashboardMenuItemName">Steps</div>
 		</div>
 	</a>
+			@if(request()->is('dashboard/step/*') or request()->is('dashboard/component/*'))
+			@foreach($steps as $step)
+		<a href="{{ route('dashboard.step', $step->id) }}">
+		<div class="row">
+			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuSubItem @if($step->id==$activeStep->id) activeMenu @endif'>&nbsp;</div></div>
+			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 DashboardMenuSubItemName">{{ $step->name}}</div>
+		</div>
+		@endforeach
+		@endif
 
 	<a href="{{ route('dashboard.package') }}">
 		<div class="row">

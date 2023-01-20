@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('parameters', function (Blueprint $table) {
+        Schema::create('steps', function (Blueprint $table) {
             $table->id();
-			$table->string('name');
-			$table->string('value');
-			$table->string('partition');
+			$table->string('name');			
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parameters');
+        Schema::dropIfExists('steps_models');
     }
 };
