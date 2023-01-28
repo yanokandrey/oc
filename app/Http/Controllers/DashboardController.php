@@ -133,11 +133,13 @@ class DashboardController extends Controller
 		return view('dashboard.step',['steps' => $steps, 'components' => $components, 'activeStep' => $activeStep]);
 	}
 
-	public function package(){
-		return view('dashboard.package');
+	public function packages(Request $request){
+		$packages = DB::table('packages')->where(['deleted' => 0])->get();
+		return view('dashboard.packages',['packages' => $packages]);
 	}
-	public function delivery(){
-		return view('dashboard.delivery');
+	public function deliveries(){
+		$deliveries = DB::table('deliveries')->where(['deleted' => 0])->get();
+		return view('dashboard.deliveries',['deliveries' => $deliveries]);
 	}
     public function payments(){
 		return view('dashboard.payments');

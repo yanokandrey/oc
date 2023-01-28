@@ -38,15 +38,15 @@
 		@endforeach
 		@endif
 
-	<a href="{{ route('dashboard.package') }}">
+	<a href="{{ route('dashboard.packages') }}">
 		<div class="row">
-			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuItem @if(request()->is('dashboard/package')) activeMenu @endif'>&nbsp;</div></div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuItem @if(request()->is('dashboard/packages') or request()->is('dashboard/package/*')) activeMenu @endif'>&nbsp;</div></div>
 			<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 DashboardMenuItemName">Package</div>
 		</div>
 	</a>
-	<a href="{{ route('dashboard.delivery') }}">
+	<a href="{{ route('dashboard.deliveries') }}">
 		<div class="row">
-			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuItem @if(request()->is('dashboard/delivery')) activeMenu @endif'>&nbsp;</div></div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuItem @if(request()->is('dashboard/deliveries')) activeMenu @endif'>&nbsp;</div></div>
 			<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 DashboardMenuItemName">Delivery</div>
 		</div>
 	</a>

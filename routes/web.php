@@ -7,6 +7,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\StepsController;
 use App\Http\Controllers\ComponentsController;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\DeliveryController;
 //use App\Http\Middleware\Auth;
 
 
@@ -33,9 +35,21 @@ Route::group(['prefix' =>'dashboard', 'middleware' => 'auth'], function(){
 	Route::post('/updateComponent',[ComponentsController::class, 'updateComponent', 'middleware' => 'dashboard'])->name('updateComponent');
 	Route::get('/deleteComponent/{id}',[ComponentsController::class, 'deleteComponent', 'middleware' => 'dashboard'])->name('dashboard.deleteComponent');
 	
+	Route::get('/packages',[DashboardController::class, 'packages', 'middleware' => 'dashboard'])->name('dashboard.packages');
+	Route::get('/package/{id}',[PackageController::class, 'package', 'middleware' => 'dashboard'])->name('dashboard.package');
+	Route::post('/addPackage',[PackageController::class, 'addPackage', 'middleware' => 'dashboard'])->name('addPackage');
+	Route::post('/updatePackage',[PackageController::class, 'updatePackage', 'middleware' => 'dashboard'])->name('updatePackage');
+	Route::get('/deletePackage/{id}',[PackageController::class, 'deletePackage', 'middleware' => 'dashboard'])->name('dashboard.deletePackage');
 	
-	Route::get('/package',[DashboardController::class, 'package', 'middleware' => 'dashboard'])->name('dashboard.package');
-	Route::get('/delivery',[DashboardController::class, 'delivery', 'middleware' => 'dashboard'])->name('dashboard.delivery');
+	Route::get('/deliveries',[DashboardController::class, 'deliveries', 'middleware' => 'dashboard'])->name('dashboard.deliveries');
+	Route::get('/delivery/{id}',[DeliveryController::class, 'delivery', 'middleware' => 'dashboard'])->name('dashboard.deliveery');
+	Route::post('/addDelivery',[DeliveryController::class, 'add', 'middleware' => 'dashboard'])->name('addDelivery');
+	Route::post('/updateDelivery',[DeliveryController::class, 'update', 'middleware' => 'dashboard'])->name('updateDelivery');
+	Route::get('/deleteDelivery/{id}',[DeliveryController::class, 'delete', 'middleware' => 'dashboard'])->name('dashboard.deleteDelivery');
+
+	
+//	Route::get('/package',[DashboardController::class, 'package', 'middleware' => 'dashboard'])->name('dashboard.package');
+//	Route::get('/delivery',[DashboardController::class, 'delivery', 'middleware' => 'dashboard'])->name('dashboard.delivery');
 	Route::get('/payments',[DashboardController::class, 'payments', 'middleware' => 'dashboard'])->name('dashboard.payments');
 });
 Route::get('/order/order',[OrderController::class, 'order'])->name('order.order');

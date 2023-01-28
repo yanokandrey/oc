@@ -53,8 +53,8 @@ class ParameterController extends Controller
 			$fileFavicon->move($destinationPath,$fileFavicon->getClientOriginalName());
 	
 			$fileFaviconName=$fileFavicon->getClientOriginalName();
-			$FaviconBladePhpContent='<link rel="icon" type="image/x-icon" href="'.$fileFaviconName.'">';
-			$DashboardFaviconBladePhpContent='<link rel="icon" type="image/x-icon" href="../'.$fileFaviconName.'">';
+			$FaviconBladePhpContent='<link rel="icon" type="image/x-icon" href="{{ asset(\''.$fileFaviconName.'\')}}">';
+			$DashboardFaviconBladePhpContent='<link rel="icon" type="image/x-icon" href="{{ asset(\''.$fileFaviconName.'\')}}">';
 	
 			Storage::disk('views')->put('favicon.blade.php',$FaviconBladePhpContent);
 			Storage::disk('views')->put('dashboard/favicon.blade.php',$DashboardFaviconBladePhpContent);

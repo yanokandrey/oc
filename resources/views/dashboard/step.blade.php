@@ -37,9 +37,14 @@
     </div>
     </form>
 @foreach($components as $component)
-    <div class='row'>
+ 			<div class='row'><a href="{{ route('dashboard.component', $component->id) }}">
+	            <div class='col-lg-6 col-md-6 col-xs-6 mb-1'>
+					<img class='imageThumbnail' src='/storage/thumbnails/{{$component->image}}'>&nbsp;{{$component->name}}
+				</div></a>
+            </div><!-- 
+	<div class='row'>
 	    <div class='col-12'><a href='{{ route('dashboard.component', $component->id) }}'>{{ $component->name }}</a></div>
-    </div>
+    </div>-->
 @endforeach
     <form action="{{ route('addComponent') }}" method="POST" enctype="multipart/form-data">
     <div class='row mt-3'>

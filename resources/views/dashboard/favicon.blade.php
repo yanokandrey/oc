@@ -1,1 +1,1 @@
-<link rel="icon" type="image/x-icon" href="../favicon16.png">
+<link rel="icon" type="image/x-icon" href="{{ asset('favicon16.png')}}">
