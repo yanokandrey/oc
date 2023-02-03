@@ -11,7 +11,7 @@ use Image;
 
 class DeliveryController extends Controller
 {
-	Const $table="deliveries";
+	public $table="deliveries";
 	
     public function add(Request $request) {
 		
@@ -22,17 +22,17 @@ class DeliveryController extends Controller
 			'weight' => 'required'
         ])){
 			
-			$image=$this->Image($request);		
-			DB::insert("insert into $table (name,image,description,price,weight,checked,deleted) values ('$request->name','$image','$request->description','$request->price','$request->weight',0,0)");
-			return redirect(route('dashboard.delivery'));	 
+			$image=$this->Image($request);
+			DB::insert("insert into $this->table (name,image,description,price,weight,checked,deleted) values ('$request->name','$image','$request->description','$request->price','$request->weight',0,0)");
+			return redirect(route('dashboard.deliveries'));	 
 		}
 	}
     public function delivery(Request $request) {
 	       // $steps = DB::table('steps')->get();
-	        $delivery = DB::table($table)->where(['id' => $request->id])->first();
+	        $delivery = DB::table($this->table)->where(['id' => $request->id])->first();
 		   // $activeStep = DB::table('steps')->where(['id' => $component->step])->first();
-	    	return view('dashboard.delivery',['delivery' => $devovery]);
-	    }
+	    	return view('dashboard.delivery',['delivery' => $delivery]);
+	}
     public function Image(Request $request){
 		if($request->validate([
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:204800'
@@ -69,14 +69,14 @@ class DeliveryController extends Controller
 		if($request->validate([
             'name' => 'required',
        ])){
-		   DB::table($table)
+		   DB::table($this->table)
               ->where('id', $request->id)
               ->update(['name' => $request->name]);
 	   }
 	   if($request->validate([
 			'description' => 'required',
        ])){
-		   DB::select("update $table set description='$request->description' where id='$request->id'");
+		   DB::select("update $this->table set description='$request->description' where id='$request->id'");
  
 		   
 			  //$sql = "update packoges where id='$request->id' (description) VALUES (?)";
@@ -89,27 +89,27 @@ class DeliveryController extends Controller
 	   }
 	   if($request->validate([
 			'price' => 'required',
-       ])){   DB::table($table)
+       ])){   DB::table($this->table)
               ->where('id', $request->id)
               ->update(['price' => $request->price]);
 			  }
 	   if($request->validate([
 			'weight' => 'required',
        ])){
-		      DB::table($table)
+		      DB::table($this->table)
               ->where('id', $request->id)
               ->update(['weight' => $request->weight]);
 	   }
 	   	if($request->validate([
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:204800',
        ])){
-		   $oldImage=DB::table($table)->where(['id' => $request->id])->first()->image;
+		   $oldImage=DB::table($this->table)->where(['id' => $request->id])->first()->image;
 		    if($oldImage){
 				Storage::drive('public')->delete($oldImage);
 				Storage::drive('public')->delete("thumbnails/".$oldImage);
 		    }
 			$image=$this->Image($request);
-			DB::table($table)
+			DB::table($this->table)
               ->where('id', $request->id)
               ->update(['image' => $image]);
 	   }
@@ -118,14 +118,14 @@ class DeliveryController extends Controller
 	public function delete(Request $request) {
 //dd($request);	
 	//$steps = DB::table('steps')->get();
-	    $delivery =  DB::table($table)->where(['id' => $request->id])->first();
+	    $delivery =  DB::table($this->table)->where(['id' => $request->id])->first();
 		//$activeStep =  DB::table('steps')->where(['id' => $package->step])->first();
-		     DB::table($table)
+		     DB::table($this->table)
               ->where('id', $request->id)
               ->update(['deleted' => 1]);
 		
 	//	$deliveries = DB::table($table)->where(['deleted' => 0])->get();
-		return redirect(route('dashboard.deliveries'))
+		return redirect(route('dashboard.deliveries'));
 		//return view('dashboard.deliveries',['deviveries' => $deliveries]);
 	}
 }

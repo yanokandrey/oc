@@ -108,7 +108,7 @@ class ComponentsController extends Controller
 	}
 	public function Image(Request $request){
 		if($request->validate([
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:204800',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:204800',
        ])){
 			$fileImage = $request->file('image');
 

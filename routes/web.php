@@ -42,7 +42,7 @@ Route::group(['prefix' =>'dashboard', 'middleware' => 'auth'], function(){
 	Route::get('/deletePackage/{id}',[PackageController::class, 'deletePackage', 'middleware' => 'dashboard'])->name('dashboard.deletePackage');
 	
 	Route::get('/deliveries',[DashboardController::class, 'deliveries', 'middleware' => 'dashboard'])->name('dashboard.deliveries');
-	Route::get('/delivery/{id}',[DeliveryController::class, 'delivery', 'middleware' => 'dashboard'])->name('dashboard.deliveery');
+	Route::get('/delivery/{id}',[DeliveryController::class, 'delivery', 'middleware' => 'dashboard'])->name('dashboard.delivery');
 	Route::post('/addDelivery',[DeliveryController::class, 'add', 'middleware' => 'dashboard'])->name('addDelivery');
 	Route::post('/updateDelivery',[DeliveryController::class, 'update', 'middleware' => 'dashboard'])->name('updateDelivery');
 	Route::get('/deleteDelivery/{id}',[DeliveryController::class, 'delete', 'middleware' => 'dashboard'])->name('dashboard.deleteDelivery');
