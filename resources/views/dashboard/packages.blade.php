@@ -27,6 +27,11 @@ OrderConstructor - daahboard/package
 		<div class='col-lg-6 col-md-6 col-xs-6 fs-6 border border-secondary-subtle border-start-0 border-end-0 text-uppercase bg-light text-dark'><a href="{{ route('dashboard.package', $package->id) }}">{{ $package->name }}&nbsp;</a></div>
   </div>!-->
 @endforeach
+    <div class='pt-2'>
+		<button type='button' class="btn btn-primary" data-toggle="collapse" data-target="#showForm">Add new package</button>
+	</div>
+	<div id='showForm' class='collapse'>
+
  <form action="{{ route('addPackage') }}" method="POST" enctype="multipart/form-data">
     <div class='row mt-3'>
 	    <div class='col-lg-6 col-md-6 col-xs-6 pt-1 pb-1 dotted-frame'>
@@ -52,6 +57,7 @@ OrderConstructor - daahboard/package
 		</div>
 	</div>
 	</form>
+	</div>
 @endsection
 @section('guest')
 GUEST

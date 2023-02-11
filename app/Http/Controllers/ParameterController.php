@@ -69,7 +69,7 @@ class ParameterController extends Controller
 	}
 	public function logo(Request $request){
 		if($request->validate([
-			'logo' => 'file|mimes: jpg,gif,png|max:8100|dimensions:min_width=32,min_height=32,max_width=256,max_height=64'
+			'logo' => 'file|mimes: jpg,gif,png|max:20000|dimensions:min_width=32,min_height=32,max_width=1100,max_height=500'
         ])){
 			$logo=DB::table('parameters')->where(['name' => 'Logo'])->first();
 			

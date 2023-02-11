@@ -14,7 +14,7 @@
 @section('main')
 <div class='row'>
 		<div class='BlockTitle'>
-			Delivery
+			Delivery 
 		</div>
 </div>
 @foreach($deliveries as $delivery)
@@ -24,6 +24,10 @@
 				</div></a>
             </div> 
 @endforeach
+    <div class='pt-2'>
+		<button type='button' class="btn btn-primary" data-toggle="collapse" data-target="#showForm">Add new delivery</button>
+	</div>
+	<div id='showForm' class='collapse'>
  <form action="{{ route('addDelivery') }}" method="POST" enctype="multipart/form-data">
     <div class='row mt-3'>
 	    <div class='col-lg-6 col-md-6 col-xs-6 pt-1 pb-1 dotted-frame'>
@@ -49,6 +53,7 @@
 		</div>
 	</div>
 	</form>
+	</div>
 @endsection
 @section('guest')
 GUEST
