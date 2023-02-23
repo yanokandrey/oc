@@ -164,7 +164,27 @@ input {
 	margin-bottom: 10px;
 	text-align: left;
 	color: #333333;
-	background-color: #ffff88;
+	background-color: #ccffcc;
+	text-transform: uppercase;
+}
+.SsidebarTitle {
+	border-bottom: 0px solid #333333;
+	font-size: 10pt;
+	margin-top: 4px;
+	margin-bottom: 10px;
+	text-align: left;
+	color: #333333;
+	background-color: #ddffdd;
+	text-transform: uppercase;
+}
+.HintTitle {
+	border-bottom: 0px solid #333333;
+	font-size: 10pt;
+	margin-top: 4px;
+	margin-bottom: 10px;
+	text-align: left;
+	color: #333333;
+	background-color: #bbffbb;
 	text-transform: uppercase;
 }
 .border {

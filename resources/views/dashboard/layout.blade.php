@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">1
 	<link href="/css/style.css" rel="stylesheet">
 	@include('dashboard/favicon')
  </head>
@@ -20,8 +20,11 @@
 			<div class='col-lg-2 col-md-3 col-sm-12'>
 			@yield('sidebar')
 			</div>
-			<div class='col-lg-10 col-md-9 col-sm-12 h-100 '>
+			<div class='col-lg-7 col-md-5 col-sm-12 h-100 '>
 			@yield('main')
+			</div>
+			<div class='col-lg-3 col-md-4 col-sm-12'>
+			@yield('hint')
 			</div>
 		</div>
 		<div class='row'>

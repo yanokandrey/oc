@@ -1,4 +1,7 @@
 <div class="ccnteiner">
+	<div class='SsidebarTitle pl-1'>
+			SETTINGS
+        </div>
 	<a href="{{ route('dashboard.basicWelcome') }}">
 		<div class="row">
 			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><div class='DashboardMenuItem @if(request()->is('dashboard/basicWelcome') or request()->is('dashboard/basicSEO')) activeMenu @endif'>&nbsp;</div></div>

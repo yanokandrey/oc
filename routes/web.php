@@ -9,6 +9,7 @@ use App\Http\Controllers\StepsController;
 use App\Http\Controllers\ComponentsController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\PaymentsController;
 //use App\Http\Middleware\Auth;
 
 
@@ -47,11 +48,14 @@ Route::group(['prefix' =>'dashboard', 'middleware' => 'auth'], function(){
 	Route::post('/updateDelivery',[DeliveryController::class, 'update', 'middleware' => 'dashboard'])->name('updateDelivery');
 	Route::get('/deleteDelivery/{id}',[DeliveryController::class, 'delete', 'middleware' => 'dashboard'])->name('dashboard.deleteDelivery');
 
-	
+
 //	Route::get('/package',[DashboardController::class, 'package', 'middleware' => 'dashboard'])->name('dashboard.package');
 //	Route::get('/delivery',[DashboardController::class, 'delivery', 'middleware' => 'dashboard'])->name('dashboard.delivery');
 	Route::get('/payments',[DashboardController::class, 'payments', 'middleware' => 'dashboard'])->name('dashboard.payments');
+	Route::get('/payment',[PaymentsController::class, 'payment', 'middleware' => 'dashboard'])->name('dashboard.payment');
 });
 Route::get('/order/order',[OrderController::class, 'order'])->name('order.order');
+
+
 
 

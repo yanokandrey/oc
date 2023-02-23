@@ -15,16 +15,14 @@ OrderConstructor - daahboard/delivery
 <div class='container'>
     <div class='row'>
 		<div class='col-lg-8 col-md-8 col-xs-8 BlockTitle'>
-		<a href="{{ route('dashboard.deliveries') }}">Delivery</a>\ {{$delivery->name}}&nbsp;
-		
-		   
+			<a href="{{ route('dashboard.deliveries') }}">Delivery</a>\ {{$delivery->name}}&nbsp;
         </div>
     </div>
     <form action="{{ route('updateDelivery') }}" method="POST" enctype="multipart/form-data">
     <div class='row'>
 	    <div class='col-lg-6 col-md-6 col-xs-6 pt-1 pb-1 dotted-frame'>
 	        @csrf
-						<div class='row'>
+			<div class='row'>
 	            <div class='col-lg-12 col-md-12 col-xs-12 mb-1'>
 					<img class='imageThumbnail' src='/storage/thumbnails/{{$delivery->image}}'>&nbsp;{{$delivery->image}}
 				</div>
