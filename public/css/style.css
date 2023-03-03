@@ -13,6 +13,7 @@ input {
 	margin-bottom: 4px;
 	margin-top: 10ps;
 	}
+
 .submit {
 	
 }
@@ -186,6 +187,10 @@ input {
 	color: #333333;
 	background-color: #bbffbb;
 	text-transform: uppercase;
+}
+.hint {
+	text-decoration: underline;
+	color: blue;
 }
 .border {
 	border: 1px solid black;
